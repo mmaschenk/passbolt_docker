@@ -2,6 +2,8 @@ FROM php:7.3.20-fpm
 
 LABEL maintainer="Passbolt SA <contact@passbolt.com>"
 
+USER root
+
 ARG PASSBOLT_VERSION="2.13.5"
 ARG PASSBOLT_URL="https://github.com/passbolt/passbolt_api/archive/v${PASSBOLT_VERSION}.tar.gz"
 ARG PASSBOLT_CURL_HEADERS=""
@@ -55,15 +57,14 @@ RUN docker-php-ext-enable $PHP_EXTENSIONS $PECL_PASSBOLT_EXTENSIONS
 
 RUN docker-php-source delete \
     && EXPECTED_SIGNATURE=$(curl -s https://composer.github.io/installer.sig) \
-    #&& curl -o composer-setup.php https://getcomposer.org/installer \
-    && curl -o composer-setup.php https://raw.githubusercontent.com/composer/getcomposer.org/fc1149e4b8557431d4b7ded852a268a553d85d20/web/installer \
+    && curl -o composer-setup.php https://getcomposer.org/installer \
     && ACTUAL_SIGNATURE=$(php -r "echo hash_file('SHA384', 'composer-setup.php');") \
     && if [ "$EXPECTED_SIGNATURE" != "$ACTUAL_SIGNATURE" ]; then \
          >&2 echo 'OK: Allowing invalid installer signature'; \
          #rm composer-setup.php; \
          #exit 1; \
        fi \
-    && php composer-setup.php \
+    && php composer-setup.php --version=1.10.16 \
     && mv composer.phar /usr/local/bin/composer \
     && rm composer-setup.php \
     && curl -sSL -H "$PASSBOLT_CURL_HEADERS" "$PASSBOLT_URL" | tar zxf - -C . --strip-components 1 \
