@@ -169,3 +169,4 @@ $ su -c "source /etc/environment; bin/cake passbolt healthcheck" -s /bin/bash ww
 * rng-tools or haveged are required on host machine to speed up entropy generation on containers.
 This way gpg key creation on passbolt container will be faster.
 * mariadb/mysql >= 5.6
+
