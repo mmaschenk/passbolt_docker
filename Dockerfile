@@ -6,4 +6,4 @@ USER root
 
 WORKDIR /var/www/passbolt
 
-CMD ["sleep 3600"]
+CMD ["sleep", "3600"]
