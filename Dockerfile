@@ -6,4 +6,5 @@ USER root
 
 WORKDIR /var/www/passbolt
 
+RUN apt-get  install -y procps
 CMD ["sleep", "3600"]
