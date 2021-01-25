@@ -13,5 +13,7 @@ RUN gcc -o subash subash.c && \
 
 WORKDIR /var/www/passbolt
 
+COPY bin/docker-entrypoint.sh /docker-entrypoint.sh
+
 RUN apt-get update && apt-get install -y procps
 CMD ["sleep", "3600"]
