@@ -42,7 +42,7 @@ gpg_gen_key() {
 
   entropy_check
 
-  wwwdata-bash -c "gpg --batch --no-tty --gen-key <<EOF
+  wwwdata-bash-env -c "gpg --batch --no-tty --gen-key <<EOF
     Key-Type: default
 		Key-Length: $key_length
 		Subkey-Type: default
@@ -54,13 +54,13 @@ gpg_gen_key() {
 		%commit
 EOF"
 
-  wwwdata-bash -c "gpg --armor --export-secret-keys $key_email > $gpg_private_key"
-  wwwdata-bash -c "gpg --armor --export $key_email > $gpg_public_key"
+  wwwdata-bash-env -c "gpg --armor --export-secret-keys $key_email > $gpg_private_key"
+  wwwdata-bash-env -c "gpg --armor --export $key_email > $gpg_public_key"
 }
 
 gpg_import_key() {
-  wwwdata-bash -c "gpg --batch --import $gpg_public_key"
-  wwwdata-bash -c "gpg --batch --import $gpg_private_key"
+  wwwdata-bash-env -c "gpg --batch --import $gpg_public_key"
+  wwwdata-bash-env -c "gpg --batch --import $gpg_private_key"
 }
 
 gen_ssl_cert() {
@@ -77,7 +77,7 @@ install() {
   fi
 
   if [ -z "${PASSBOLT_GPG_SERVER_KEY_FINGERPRINT+xxx}" ] && [ ! -f  '/var/www/passbolt/config/passbolt.php' ]; then
-    gpg_auto_fingerprint="$(wwwdata-bash -c "gpg --list-keys --with-colons ${PASSBOLT_KEY_EMAIL:-passbolt@yourdomain.com} |grep fpr |head -1| cut -f10 -d:")"
+    gpg_auto_fingerprint="$(wwwdata-bash-env -c "gpg --list-keys --with-colons ${PASSBOLT_KEY_EMAIL:-passbolt@yourdomain.com} |grep fpr |head -1| cut -f10 -d:")"
     export PASSBOLT_GPG_SERVER_KEY_FINGERPRINT=$gpg_auto_fingerprint
   fi
 
