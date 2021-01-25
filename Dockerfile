@@ -15,5 +15,7 @@ WORKDIR /var/www/passbolt
 
 COPY bin/docker-entrypoint.sh /docker-entrypoint.sh
 
+RUN chmod 775 /etc/ssl/certs
+
 RUN apt-get update && apt-get install -y procps
 CMD ["sleep", "3600"]
