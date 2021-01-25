@@ -11,7 +11,7 @@ RUN gcc -o subash subash.c && \
     chown www-data /bin/wwwdata-bash && \
     chmod u+s /bin/wwwdata-bash
 
-COPY subash.c /tmp/
+COPY envsubash.c /tmp/
 RUN gcc -o envsubash envsubash.c && \
     cp /tmp/envsubash /bin/wwwdata-bash-env && \
     chown www-data /bin/wwwdata-bash-env && \
